@@ -155,8 +155,17 @@ int main(int argc, char *argv[]){
 
 		//EMBARQUE:
 
+
 //!!!!!!!!!!!!!!!!!!!!!AÑADIR COMPROBACION DE QUE EL NUM DE ASISTENTES SEA MAYOR QUE 0!!!!!!!!!!!!!!!!!!!!!!!!!1
 		int numAsistentes = atoi(argv[1]);
+
+		//Comprobamos que el numero de asistentes es mayor que 1, si es menos finalizamos el programa.
+		if(numAsistentes<1){
+
+			printf("El número introducido de asistentes es menor que 1, no se puede realizar el embarque. (El programa finaliza) \n");
+			exit(-1);
+		}
+
 		//Generamos tantos hijos como nos pasan en el argumento del main
 		for(j=0; j<numAsistentes; j++){  //j<*argv[2]
 
