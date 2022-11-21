@@ -63,6 +63,9 @@ int main(int argc, char *argv[]){
 
 						printf("Soy el técnico y el vuelo es viable.\n");
 					}
+
+					/*Enviamos al padre ese valor para que proceda a hacer lo correspondiente en función
+					  de si el vuelo es viable o no lo es*/
 					exit(vueloViable);
 					break;
 
@@ -77,18 +80,11 @@ int main(int argc, char *argv[]){
 					if(hayOverbooking==0){
 
 						printf("Soy el encargado y no hay overbooking.\n");
-//						overbookingContador = 0;
-						//int n3kill = kill(getppid(), SIGUSR1); //Señal para proceder al embarque
 					}
 					else{
 
-						printf("Soy el encargado y hay overbooking.\n"); //SE ME PARA EL PROGRAMA AQUI, HASTA AQUI FUNCIONA
-//						overbookingContador = 10;
-//						printf("%d",overbookingContador);
-						//int n4kill = kill(getppid(), SIGUSR1); //Señal para proceder al embarque
+						printf("Soy el encargado y hay overbooking.\n"); 
 					}
-
-					printf("TRAZA: antes de enviar la señal del encargado al coordinador.\n");
 					exit(hayOverbooking); 
 					break;
 			}
@@ -125,7 +121,7 @@ int main(int argc, char *argv[]){
 			kill(hijos[1], SIGTERM); //Matamos al proceso encargado
 
 			printf("Finaliza el programa ya que el vuelo no es viable.\n");
-			exit(-1); //Finalizamos el programa ???????????????????????????????????''
+			exit(-1); 
 		}
 		//Si el valor recibido es 1, el vuelo es viable: 
 		else{
@@ -150,14 +146,10 @@ int main(int argc, char *argv[]){
 
 		printf("TRAZA: El coordinador recibe la señal del proceso encargado.\n");
 
-//		//El padre espera la señal para hacer el embarque
-//		pause(); 
-
 		//EMBARQUE:
-
-
-//!!!!!!!!!!!!!!!!!!!!!AÑADIR COMPROBACION DE QUE EL NUM DE ASISTENTES SEA MAYOR QUE 0!!!!!!!!!!!!!!!!!!!!!!!!!1
 		int numAsistentes = atoi(argv[1]);
+
+//		printf("TRAZA: %d", numAsistentes);
 
 		//Comprobamos que el numero de asistentes es mayor que 1, si es menos finalizamos el programa.
 		if(numAsistentes<1){
@@ -169,7 +161,7 @@ int main(int argc, char *argv[]){
 		//Generamos tantos hijos como nos pasan en el argumento del main
 		for(j=0; j<numAsistentes; j++){  //j<*argv[2]
 
-			printf("TRAZA: se entra al for que crea los asistentes, asistente numero %d.\n", j+1);
+//			printf("TRAZA: se entra al for que crea los asistentes, asistente numero %d.\n", j+1);
 
 			f2 = fork();
 
@@ -189,11 +181,10 @@ int main(int argc, char *argv[]){
 				int numPasajeros = calculaAleatorios(20,30);
 				exit(numPasajeros);
 
-				//PARA QUE NO ME CREE EXPONENCIALMENTE HACER UN PAUSE Y GENERAR EL SIGUIENTE SOLO UNA VEZ OTRO ACABE
 				pause();
 
 			}
-			else{ //PADRE: coordinador
+			else{
 
 				asistentes[j] = f2;
 			}
@@ -208,7 +199,7 @@ int main(int argc, char *argv[]){
 		//Envía a todos los asistentes una señal
 		for(k=0; k<numAsistentes; k++){
 
-			printf("TRAZA: se entra al for que envia señal a todos los asistentes. Señal enviada numero %d.\n", k);
+//			printf("TRAZA: se entra al for que envia señal a todos los asistentes. Señal enviada numero %d.\n", k);
 			
 			int n4kill = kill(asistentes[k], SIGUSR2);
 
@@ -224,8 +215,7 @@ int main(int argc, char *argv[]){
 			pasajerosTotales = pasajerosTotales + pasajerosPorAsistente[m];
 		}
 
-		//NO ME RESTA LOS 10 CUANDO HAY OVERBOOKING
-		printf("TRAZA: Cantidad a restar del overbooking: %d \n", overbookingContador);
+//		printf("TRAZA: Cantidad a restar del overbooking: %d \n", overbookingContador);
 
 		//Restamos a los pasajeros totales los necesarios según el overbooking
 		pasajerosTotales = pasajerosTotales - overbookingContador;
